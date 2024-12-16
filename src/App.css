@@ -1,0 +1,12 @@
+/* global.css */
+body, html {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* Prevent horizontal overflow */
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Optional: Prevent both horizontal and vertical overflow */
+}
