@@ -1,34 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { getQuestions, submitPersonalityTest } from "../services/test";
+
+interface Question {
+  id: number;
+  text: string;
+  options: string[];
+}
 
 const CognitiveAssessment: React.FC = () => {
-  const questions = [
-    "How often does the person appear cheerful and in good spirits over the past two weeks?",
-    "How often does the person seem calm and relaxed in the past two weeks?",
-    "Has the person been active and vigorous during their daily activities recently?",
-    "How often does the person seem refreshed and well-rested after sleeping?",
-    "Does the person feel that life is meaningful and worth living in the past month (as per your observations)?",
-    "Over the past two weeks, how often has the person shown little interest or pleasure in doing things?",
-    "How often has the person appeared down, depressed, or hopeless over the past two weeks?",
-    "Has the person experienced trouble falling or staying asleep, or sleeping too much?",
-    "How often has the person seemed tired or had little energy in the past two weeks?",
-    "Has the person had difficulty concentrating on simple tasks such as reading or watching TV?",
-    "Has the person seemed to be moving or speaking very slowly, or been noticeably restless or fidgety?",
-    "Has the person expressed thoughts indicating they might be better off dead or harming themselves?",
-    "In the last month, how often has the person appeared unable to control the important things in their life?",
-    "How often has the person seemed confident in their ability to handle personal problems?",
-    "How often has the person expressed that things were going their way?",
-    "How often has the person been angered by things that were outside of their control?",
-    "Does the person have someone to talk to when they are upset or sad?",
-    "Has the person felt lonely or isolated from others in the past month (as per your observations)?",
-  ];
+  const navigate = useNavigate();
+  const [questions, setQuestions] = useState<Question[]>([]);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
+  const [responses, setResponses] = useState<string[]>([]);
 
-  // State to manage current question, answers, and responses
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [responses, setResponses] = useState(
-    new Array(questions.length).fill("")
-  );
+  useEffect(() => {
+    const fetchQuestions = async () => {
+      try {
+        const fetchedQuestions = await getQuestions();
+        setQuestions(fetchedQuestions);
+        setResponses(new Array(fetchedQuestions.length).fill(""));
+      } catch (error) {
+        toast.error("Failed to load questions");
+        navigate("/");
+      }
+    };
+
+    fetchQuestions();
+  }, [navigate]);
 
   const handleAnswerChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -37,6 +39,29 @@ const CognitiveAssessment: React.FC = () => {
     const updatedResponses = [...responses];
     updatedResponses[index] = e.target.value;
     setResponses(updatedResponses);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      // Prepare questions data
+      const questionsData = questions.map((question, index) => ({
+        question_id: question.id,
+        question_text: question.text,
+        selected_answer: responses[index]
+      }));
+
+      const result = await submitPersonalityTest(questionsData);
+      
+      toast.success("Assessment submitted successfully!");
+      navigate("/", { 
+        state: { 
+          questionsData,
+          submissionId: result.submission_id 
+        } 
+      });
+    } catch (error) {
+      toast.error("Failed to submit assessment");
+    }
   };
 
   const handleNextQuestion = () => {
@@ -51,11 +76,6 @@ const CognitiveAssessment: React.FC = () => {
     }
   };
 
-  const handleSubmit = () => {
-    // Handle form submission logic, such as sending data to a server
-    console.log("Responses submitted:", responses);
-  };
-
   return (
     <>
       <Header />
@@ -65,17 +85,17 @@ const CognitiveAssessment: React.FC = () => {
             Cognitive Assessment
           </h1>
 
-          <div className="bg-white p-8 rounded-lg shadow-md">
-            {/* Display the current question */}
-            <p className="text-xl font-medium mb-4">
-              {questions[currentQuestionIndex]}
-            </p>
+          {questions.length > 0 ? (
+            <div className="bg-white p-8 rounded-lg shadow-md">
+              {/* Current Question */}
+              <p className="text-xl font-medium mb-4">
+                {questions[currentQuestionIndex].text}
+              </p>
 
-            {/* Answer options displayed in columns (one per line) */}
-            <div className="space-y-4 mb-6">
-              {["Never", "Rarely", "Sometimes", "Often", "Always"].map(
-                (option) => (
-                  <label key={option} className="block">
+              {/* Render Dynamic Options */}
+              <div className="space-y-4 mb-6">
+                {questions[currentQuestionIndex].options.map((option: string, idx: number) => (
+                  <label key={idx} className="block">
                     <input
                       type="radio"
                       name={`question-${currentQuestionIndex}`}
@@ -88,40 +108,43 @@ const CognitiveAssessment: React.FC = () => {
                     />
                     <span className="ml-2">{option}</span>
                   </label>
-                )
-              )}
-            </div>
+                ))}
+              </div>
 
-            {/* Navigation buttons */}
-            <div className="flex justify-between items-center">
-              <button
-                onClick={handlePrevQuestion}
-                disabled={currentQuestionIndex === 0}
-                className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors duration-300"
-              >
-                Previous
-              </button>
-              {currentQuestionIndex === questions.length - 1 ? (
+              {/* Navigation Buttons */}
+              <div className="flex justify-between items-center">
                 <button
-                  onClick={handleSubmit}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300"
+                  onClick={handlePrevQuestion}
+                  disabled={currentQuestionIndex === 0}
+                  className="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors duration-300"
                 >
-                  Submit
+                  Previous
                 </button>
-              ) : (
-                <button
-                  onClick={handleNextQuestion}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300"
-                >
-                  Next
-                </button>
-              )}
+                {currentQuestionIndex === questions.length - 1 ? (
+                  <button
+                    onClick={handleSubmit}
+                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300"
+                  >
+                    Submit
+                  </button>
+                ) : (
+                  <button
+                    onClick={handleNextQuestion}
+                    className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300"
+                  >
+                    Next
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
+          ) : (
+            <p className="text-center text-gray-500">Loading questions...</p>
+          )}
         </div>
       </div>
       <Footer />
     </>
   );
 };
+
 export default CognitiveAssessment;
