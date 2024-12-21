@@ -67,18 +67,24 @@ export const submitPersonalityTest = async (questionsData: any[]) => {
     completed_at: string | null;
   }> => {
     try {
-      const token = localStorage.getItem('token'); // Assuming token is stored in localStorage
+      const token = localStorage.getItem('access_token');
+      const username = localStorage.getItem('username'); // Email saved as username
+      if (!token || !username) {
+        throw new Error('No access token or username found. Please log in.');
+      }
+  
       const response = await axios.get(`${API_URL}/cognitive/status`, {
+        params: { email: username },
         headers: {
-          'Authorization': `Bearer ${token}`
-        }
+          'Authorization': `Bearer ${token}`,
+        },
       });
       return response.data;
     } catch (error) {
       console.error("Error checking cognitive test status:", error);
       throw error;
     }
-  };
+  };  
 
 // api/facial.ts
 // In your services/test.ts file
@@ -113,4 +119,33 @@ export const submitFacialAnalysis = async (data: File | FormData): Promise<Facia
   });
 
   return response.data;
+};
+
+export const getEmotionStatus = async (email: string): Promise<{
+  status: string;
+  data: {
+    timestamp: string;
+    scores: { [key: string]: number };
+    type: string;
+    filenames: string[];
+  }[];
+}> => {
+  try {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      throw new Error("No access token found. Please log in.");
+    }
+
+    const response = await axios.get(`${API_URL}/emotion/status`, {
+      params: { email },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching emotion status:", error);
+    throw error;
+  }
 };

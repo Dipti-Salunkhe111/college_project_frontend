@@ -1,0 +1,10 @@
+/* Example adjustment for the header */
+header {
+    padding-top: 8px; /* reduce top padding */
+    padding-bottom: 8px; /* reduce bottom padding */
+  }
+  
+  h1 {
+    font-size: 2rem; /* Adjust font size */
+  }
+  

@@ -1,15 +1,14 @@
-// src/components/CustomCard.tsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
 interface CardProps {
-  to: string; // Path to navigate when the card is clicked
-  icon: React.ReactNode; // Icon or image for the card
-  title: string; // Title of the card
-  description: string; // Description of the card
-  // Add onClick to handle user login check before navigating
-  onClick?: () => void; // Optional onClick handler
+  to: string;
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  onClick?: () => void;
   className?: string;
+  disabled?: boolean;  // Added disabled prop
 }
 
 const CustomCard: React.FC<CardProps> = ({
@@ -19,15 +18,15 @@ const CustomCard: React.FC<CardProps> = ({
   description,
   onClick,
   className,
+  disabled  // Added disabled to props
 }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    // If an onClick handler is provided, call it (such as checking login status)
+    if (disabled) return;  // Prevent click if disabled
     if (onClick) {
       onClick();
     } else {
-      // Otherwise, directly navigate to the 'to' path
       navigate(to);
     }
   };
@@ -36,26 +35,25 @@ const CustomCard: React.FC<CardProps> = ({
     <div
       onClick={handleClick}
       className={`
-      bg-gradient-to-br from-white to-blue-50 
-      p-8 
-      rounded-2xl 
-      shadow-lg 
-      hover:shadow-2xl 
-      transition-shadow 
-      flex 
-      flex-col 
-      items-center 
-      text-center 
-      transform 
-      hover:scale-105 
-      transition-transform 
-      border border-gray-200 
-      hover:border-blue-300
-      ${className || ""}
-    `}
+        bg-gradient-to-br from-white to-blue-50 
+        p-8 
+        rounded-2xl 
+        shadow-lg 
+        ${!disabled ? 'hover:shadow-2xl hover:scale-105' : ''} 
+        transition-all 
+        flex 
+        flex-col 
+        items-center 
+        text-center 
+        border border-gray-200 
+        ${disabled ? 'cursor-not-allowed' : 'hover:border-blue-300'}
+        ${className || ""}
+      `}
     >
-      <div className="text-6xl mb-6 text-blue-500">{icon}</div>
-      <h3 className="text-2xl font-bold mb-4 text-gray-800 tracking-wide">
+      <div className={`text-6xl mb-6 ${disabled ? 'text-gray-400' : 'text-blue-500'}`}>
+        {icon}
+      </div>
+      <h3 className={`text-2xl font-bold mb-4 tracking-wide ${disabled ? 'text-gray-500' : 'text-gray-800'}`}>
         {title}
       </h3>
       <p className="text-gray-600 leading-relaxed text-lg">{description}</p>
