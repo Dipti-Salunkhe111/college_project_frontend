@@ -65,7 +65,7 @@ const ResultsPage: React.FC = () => {
     if (!emotionData) return { labels: [], datasets: [] };
     const labels = Object.keys(emotionData.scores);
     const data = Object.values(emotionData.scores).map((score) => score * 100);
-
+  
     return {
       labels,
       datasets: [
@@ -89,10 +89,15 @@ const ResultsPage: React.FC = () => {
             "#FF9F40",
           ],
           borderWidth: 1,
+          barThickness: 30, // Set fixed bar thickness
+          maxBarThickness: 30, // Ensure bars don't get wider than this
+          categoryPercentage: 0.5, // Adjust spacing between categories
+          barPercentage: 0.5, // Adjust individual bar width
         },
       ],
     };
   };
+  
 
   if (isLoading) {
     return (
@@ -184,7 +189,7 @@ const ResultsPage: React.FC = () => {
         {/* Combined Score Card */}
         <div className="bg-white shadow-lg rounded-lg p-6 w-full mt-6">
           <h2 className="text-2xl font-semibold mb-4 text-green-600">
-            Combined Mental Health Score
+            Overall Mental Health Score
           </h2>
           <div className="relative w-full bg-gray-200 rounded-full h-6 mb-4">
             <div
