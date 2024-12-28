@@ -65,6 +65,7 @@ export const submitPersonalityTest = async (questionsData: any[]) => {
   export const getCognitiveTestStatus = async (): Promise<{
     has_completed_test: boolean;
     completed_at: string | null;
+    total_score?: number;
   }> => {
     try {
       const token = localStorage.getItem('access_token');
@@ -146,6 +147,83 @@ export const getEmotionStatus = async (email: string): Promise<{
     return response.data;
   } catch (error) {
     console.error("Error fetching emotion status:", error);
+    throw error;
+  }
+};
+
+export interface CognitiveTestResult {
+  total_score: number;
+  percentage_score: number;
+  test_summary: string;
+  areas_of_improvement: string[];
+  detailed_scores: {
+    question_id: number;
+    selected_option: string;
+    score: number;
+  }[];
+  questions_data: {
+    question_id: number;
+    question_text: string;
+    selected_answer: string;
+  }[];
+  submitted_at: string;
+}
+
+export interface EmotionTestResult {
+  scores: {
+    neutral: number;
+    happy: number;
+    sad: number;
+    surprise: number;
+  };
+  type: string;
+  filenames: string[];
+  timestamp: string;
+}
+
+// Update the function signatures
+export const getCognitiveTestData = async (): Promise<CognitiveTestResult> => {
+  try {
+    const token = localStorage.getItem('access_token');
+    const username = localStorage.getItem('username');
+    
+    if (!token || !username) {
+      throw new Error('No access token or username found. Please log in.');
+    }
+
+    const response = await axios.get<CognitiveTestResult>(`${API_URL}/cognitive/test-data`, {
+      params: { email: username },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching cognitive test data:", error);
+    throw error;
+  }
+};
+
+export const getEmotionTestData = async (): Promise<EmotionTestResult> => {
+  try {
+    const token = localStorage.getItem('access_token');
+    const username = localStorage.getItem('username');
+    
+    if (!token || !username) {
+      throw new Error('No access token or username found. Please log in.');
+    }
+
+    const response = await axios.get<EmotionTestResult>(`${API_URL}/emotion/test-data`, {
+      params: { email: username },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching emotion test data:", error);
     throw error;
   }
 };

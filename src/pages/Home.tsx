@@ -70,42 +70,50 @@ const Home: React.FC = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow bg-gradient-to-br from-blue-50 to-white max-h-screen">
-        <div className="container mx-auto px-4 py-16 text-center">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-400">
+      <main className="flex-grow bg-gradient-to-br from-blue-50 to-white py-8 px-4 md:py-12">
+        <div className="container mx-auto">
+          {/* Hero Section */}
+          <div className="max-w-4xl mx-auto text-center mb-8 md:mb-12">
+            <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-4 md:mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-400">
               Empowering Mental Health Awareness with Technology
             </h1>
-            <p className="text-lg md:text-xl text-gray-600 mb-12 leading-relaxed tracking-wide">
+            <p className="text-base md:text-xl text-gray-600 leading-relaxed tracking-wide px-4">
               MentalWell combines advanced cognitive assessment and emotion detection to provide personalized insights into your mental well-being. Our innovative approach helps you understand and improve your mental health.
             </p>
           </div>
 
-          <div className="mt-10 grid sm:grid-cols-1 md:grid-cols-2 gap-8 justify-center">
+          {/* Cards Section */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 max-w-4xl mx-auto">
             <CustomCard
               to="/cognitive-assessment"
               icon="🧠"
               title={cognitiveTestCompleted ? "Cognitive Assessment (Completed)" : "Cognitive Assessment"}
-              description={cognitiveTestCompleted ? `You have completed this assessment on ${completedAt}.` : "Advanced cognitive tests to evaluate mental wellness and identify potential areas of improvement."}
+              description={cognitiveTestCompleted 
+                ? `You have completed this assessment on ${completedAt}.` 
+                : "Advanced cognitive tests to evaluate mental wellness and identify potential areas of improvement."}
               onClick={() => handleCardClick("/cognitive-assessment")}
-              className={cognitiveTestCompleted ? "opacity-75 cursor-not-allowed" : ""}
+              className={`flex-1 ${cognitiveTestCompleted ? "opacity-75 cursor-not-allowed" : ""}`}
               disabled={cognitiveTestCompleted}
             />
             <CustomCard
               to="/emotion-detection"
               icon="😊"
-              title={emotionStatus && emotionStatus.length > 0 ? "Emotion Detection (Completed)" : "Emotion Detection"}
-              description={emotionStatus && emotionStatus.length > 0 ? `You have completed this assessment on ${new Date(emotionStatus[0].timestamp).toLocaleDateString()}.` : "Utilize cutting-edge AI to analyze facial expressions and understand emotional states."}
+              title={emotionStatus && emotionStatus.length > 0 
+                ? "Emotion Detection (Completed)" 
+                : "Emotion Detection"}
+              description={emotionStatus && emotionStatus.length > 0 
+                ? `You have completed this assessment on ${new Date(emotionStatus[0].timestamp).toLocaleDateString()}.` 
+                : "Utilize cutting-edge AI to analyze facial expressions and understand emotional states."}
               onClick={() => handleCardClick("/emotion-detection")}
-              className={emotionStatus && emotionStatus.length > 0 ? "opacity-75 cursor-not-allowed" : ""}
+              className={`flex-1 ${emotionStatus && emotionStatus.length > 0 ? "opacity-75 cursor-not-allowed" : ""}`}
               disabled={emotionStatus && emotionStatus.length > 0}
             />
           </div>
         </div>
       </main>
+
       <Footer />
 
-      {/* Render the modal */}
       <LoginWarningModal
         isOpen={isModalOpen}
         onClose={closeModal}

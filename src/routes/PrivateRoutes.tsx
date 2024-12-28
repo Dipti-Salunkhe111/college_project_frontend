@@ -3,6 +3,7 @@ import { Route, Routes, Navigate } from 'react-router-dom';
 import { isTokenValid } from '../utils/auth';
 import CognitiveAssessment from '../pages/Cognitive';
 import EmotionDetection from '../pages/FacialAnalysis';
+import ResultsPage from '../pages/ResultsPage';
 
 const PrivateRoute: React.FC<{ element: JSX.Element }> = ({ element }) => {
   const isLoggedIn = isTokenValid(); // Use token validation
@@ -25,6 +26,9 @@ const PrivateRoutes: React.FC = () => {
         path="/emotion-detection" 
         element={<PrivateRoute element={<EmotionDetection />} />} 
       />
+      <Route 
+      path="/results" 
+      element={<PrivateRoute element={<ResultsPage />} />}  />
     </Routes>
   );
 };
