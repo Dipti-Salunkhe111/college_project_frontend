@@ -1,35 +1,75 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { isTokenValid } from '../utils/auth';
-import { FaHome, FaInfoCircle, FaHandsHelping, FaEnvelope, FaSignInAlt, FaUserCircle, FaCog, FaSignOutAlt, FaChartLine } from 'react-icons/fa'; // Importing React Icons
-import Login from '../pages/Login'; // Import the Login component
+import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+import { isTokenValid } from "../utils/auth";
+import {
+  FaHome,
+  FaInfoCircle,
+  FaHandsHelping,
+  FaEnvelope,
+  FaSignInAlt,
+  FaUserCircle,
+  FaCog,
+  FaSignOutAlt,
+  FaChartLine,
+} from "react-icons/fa";
+import Login from "../pages/Login";
 
 const Header: React.FC = () => {
   const isLoggedIn = isTokenValid();
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false); // State to manage modal visibility
-  const [initialPath, setInitialPath] = useState('/'); // To store the path the user tried to access
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // State for dropdown visibility
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [initialPath, setInitialPath] = useState("/");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLLIElement>(null); // Update the ref type to HTMLLIElement
+  // Ref for the dropdown container
 
   const handleLoginSuccess = (path: string) => {
-    setIsLoginModalOpen(false); // Close the modal on successful login
-    window.location.href = path; // Redirect to the respective path
+    setIsLoginModalOpen(false);
+    window.location.href = path;
   };
 
   const handleLoginClick = (path: string) => {
-    setInitialPath(path); // Set the initial path before opening the modal
-    setIsLoginModalOpen(true); // Show the login modal
+    setInitialPath(path);
+    setIsLoginModalOpen(true);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    window.location.href = '/'; // Redirect to the homepage after logout
+    // Clear all localStorage items
+    localStorage.clear();
+
+    // Optionally clear sessionStorage if you're using it
+    sessionStorage.clear();
+
+    // Invalidate cache by redirecting and preventing back navigation
+    window.location.href = "/"; // Redirect to the homepage
+
+    // Clear browser cache by reloading with a hard refresh
+    window.location.reload();
   };
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen); // Toggle the visibility of the dropdown
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const username = localStorage.getItem('username'); // Retrieve the username from local storage
+  const username = localStorage.getItem("username");
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(false);
+      }
+    };
+
+    // Attach the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <header className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-lg sticky top-0 z-50">
@@ -40,14 +80,21 @@ const Header: React.FC = () => {
             alt="Logo"
             className="h-10 w-10 rounded-full transition-transform duration-300 hover:scale-110"
           />
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">MentalWell</h1>
+          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">
+            MentalWell
+          </h1>
         </div>
         <nav>
           <ul className="flex items-center space-x-8">
-            {[{ to: '/', icon: <FaHome />, label: 'Home' },
-              { to: '/about', icon: <FaInfoCircle />, label: 'About Us' },
-              { to: '/how-it-works', icon: <FaHandsHelping />, label: 'How It Works' },
-              { to: '/contact', icon: <FaEnvelope />, label: 'Contact' },
+            {[
+              { to: "/", icon: <FaHome />, label: "Home" },
+              { to: "/about", icon: <FaInfoCircle />, label: "About Us" },
+              {
+                to: "/how-it-works",
+                icon: <FaHandsHelping />,
+                label: "How It Works",
+              },
+              { to: "/contact", icon: <FaEnvelope />, label: "Contact" },
             ].map(({ to, icon, label }) => (
               <li key={to}>
                 <Link
@@ -60,7 +107,6 @@ const Header: React.FC = () => {
               </li>
             ))}
 
-            {/* Show "Get Results" only if logged in */}
             {isLoggedIn && (
               <li>
                 <Link
@@ -75,9 +121,11 @@ const Header: React.FC = () => {
               </li>
             )}
 
-            {/* Show Profile Icon with Username if logged in */}
             {isLoggedIn && (
-              <li className="relative flex flex-col items-center justify-center space-y-1">
+              <li
+                className="relative flex flex-col items-center justify-center space-y-1"
+                ref={dropdownRef}
+              >
                 <button
                   onClick={toggleDropdown}
                   className="text-white font-semibold transition-all duration-300 hover:text-pink-200 flex flex-col items-center space-y-1"
@@ -86,13 +134,12 @@ const Header: React.FC = () => {
                   <span className="text-sm">Profile</span>
                 </button>
 
-                {/* Dropdown for Profile with Username */}
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg p-4 flex flex-col space-y-2">
                     <p className="text-sm font-semibold">{username}</p>
                     <button
                       className="flex items-center space-x-2 text-sm text-gray-700 hover:text-pink-500 p-2 rounded"
-                      onClick={() => (window.location.href = '/profile')}
+                      onClick={() => (window.location.href = "/profile")}
                     >
                       <FaCog className="text-xl" />
                       <span>Settings</span>
@@ -109,11 +156,10 @@ const Header: React.FC = () => {
               </li>
             )}
 
-            {/* Only show login button if the user is not logged in */}
             {!isLoggedIn && (
               <li>
                 <button
-                  onClick={() => handleLoginClick('/')}
+                  onClick={() => handleLoginClick("/")}
                   className="text-white font-semibold transition-all duration-300 hover:text-pink-200 relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-1 after:bg-white after:transition-all after:duration-300 hover:after:w-full flex flex-col items-center justify-center space-y-1"
                 >
                   <span className="text-xl">
@@ -127,7 +173,6 @@ const Header: React.FC = () => {
         </nav>
       </div>
 
-      {/* Show Login Modal if it's open */}
       {isLoginModalOpen && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
           <Login
