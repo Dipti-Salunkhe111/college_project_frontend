@@ -1,110 +1,122 @@
-import React from "react";
+// HowItWorksPage.tsx
+import React, { useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 const HowItWorksPage: React.FC = () => {
+  useEffect(() => {
+    document.title = "MentalWell - How It Works";
+  }, []);
+
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-100 to-white">
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow container mx-auto p-4">
-        <h1 className="text-4xl font-bold mb-6 text-center text-blue-800">
-          How It Works
-        </h1>
+      <main className="flex-grow bg-gradient-to-br from-blue-50 to-white py-8 px-4 md:py-12">
+        <div className="container mx-auto">
+          {/* Hero Section */}
+          <div className="max-w-4xl mx-auto text-center mb-8 md:mb-12">
+            <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-4 md:mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-400">
+              How MentalWell Works
+            </h1>
+            <p className="text-base md:text-xl text-gray-600 leading-relaxed tracking-wide px-4">
+              Understanding your mental well-being through comprehensive assessment and analysis
+            </p>
+          </div>
 
-        <section className="bg-white shadow-lg rounded-lg p-6 mb-6">
-          <h2 className="text-2xl font-semibold mb-4 text-blue-600">
-            Step 1: Cognitive Assessment
-          </h2>
-          <p className="text-lg text-gray-700">
-            Our cognitive assessment evaluates various aspects of your mental
-            acuity, including memory, problem-solving skills, and cognitive
-            flexibility. This test is designed to give us insights into your
-            overall cognitive functioning, which plays a crucial role in mental
-            health.
-          </p>
-          <ul className="list-disc list-inside space-y-2 mt-4 text-gray-700">
-            <li className="text-lg">
-              Assess cognitive functions such as memory, attention, and problem-solving.
-            </li>
-            <li className="text-lg">
-              Generates a percentage score reflecting your cognitive performance.
-            </li>
-            <li className="text-lg">
-              Helps identify cognitive strengths and areas for improvement.
-            </li>
-          </ul>
-        </section>
+          <div className="max-w-4xl mx-auto space-y-6">
+            <section className="bg-white shadow-lg rounded-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-400">
+                Step 1: Cognitive Assessment
+              </h2>
+              <p className="text-base md:text-lg text-gray-600 leading-relaxed mb-4">
+                Our cognitive assessment evaluates various aspects of your mental acuity, including memory, problem-solving skills, and cognitive flexibility. This test is designed to give us insights into your overall cognitive functioning.
+              </p>
+              <div className="space-y-3 text-gray-600">
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Complete a series of engaging cognitive tasks designed to measure different aspects of mental performance</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Receive detailed feedback on memory, attention, and problem-solving abilities</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Get insights into your cognitive strengths and areas for improvement</span>
+                </div>
+              </div>
+            </section>
 
-        <section className="bg-white shadow-lg rounded-lg p-6 mb-6">
-          <h2 className="text-2xl font-semibold mb-4 text-blue-600">
-            Step 2: Facial Expression Analysis
-          </h2>
-          <p className="text-lg text-gray-700">
-            The facial expression analysis assesses your emotions by analyzing
-            facial cues. Using advanced AI, the system can detect various
-            emotions, such as happiness, sadness, anger, surprise, and more. 
-            These emotional insights contribute to understanding your overall
-            mental health and well-being.
-          </p>
-          <ul className="list-disc list-inside space-y-2 mt-4 text-gray-700">
-            <li className="text-lg">
-              Tracks and analyzes facial expressions to detect emotions.
-            </li>
-            <li className="text-lg">
-              Identifies patterns of emotional responses over time.
-            </li>
-            <li className="text-lg">
-              Helps provide a more comprehensive view of emotional health.
-            </li>
-          </ul>
-        </section>
+            <section className="bg-white shadow-lg rounded-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-400">
+                Step 2: Facial Expression Analysis
+              </h2>
+              <p className="text-base md:text-lg text-gray-600 leading-relaxed mb-4">
+                Our advanced AI system analyzes facial expressions to understand emotional patterns and responses, providing valuable insights into emotional well-being.
+              </p>
+              <div className="space-y-3 text-gray-600">
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>AI-powered analysis of facial expressions during specific prompts</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Detection of various emotional states and their intensities</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Pattern recognition to identify emotional response trends</span>
+                </div>
+              </div>
+            </section>
 
-        <section className="bg-white shadow-lg rounded-lg p-6 mb-6">
-          <h2 className="text-2xl font-semibold mb-4 text-blue-600">
-            Step 3: Overall Mental Health Score
-          </h2>
-          <p className="text-lg text-gray-700">
-            By combining the insights from the cognitive assessment and the
-            facial expression analysis, we create a holistic mental health score
-            that reflects both your cognitive functioning and emotional well-being.
-            This score is a valuable indicator of your overall mental health status.
-          </p>
-          <ul className="list-disc list-inside space-y-2 mt-4 text-gray-700">
-            <li className="text-lg">
-              Cognitive assessment score contributes 30% to the overall mental health score.
-            </li>
-            <li className="text-lg">
-              Facial expression analysis contributes 70% to the overall mental health score.
-            </li>
-            <li className="text-lg">
-              Provides actionable insights to help improve both cognitive and emotional health.
-            </li>
-          </ul>
-        </section>
+            <section className="bg-white shadow-lg rounded-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-400">
+                Step 3: Comprehensive Analysis
+              </h2>
+              <p className="text-base md:text-lg text-gray-600 leading-relaxed mb-4">
+                We combine data from both assessments to provide a holistic view of your mental well-being, with cognitive scores contributing 30% and emotional analysis 70% to the final assessment.
+              </p>
+              <div className="space-y-3 text-gray-600">
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Integration of cognitive and emotional data for comprehensive insights</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Weighted scoring system reflecting the importance of both components</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Generation of an overall mental well-being score</span>
+                </div>
+              </div>
+            </section>
 
-        <section className="bg-white shadow-lg rounded-lg p-6 mb-6">
-          <h2 className="text-2xl font-semibold mb-4 text-blue-600">
-            Step 4: Areas for Improvement
-          </h2>
-          <p className="text-lg text-gray-700">
-            After analyzing the results from both assessments, we provide you with
-            personalized recommendations for areas to focus on for improving your
-            mental health. These recommendations are based on both cognitive and
-            emotional factors, helping you take proactive steps toward better
-            mental well-being.
-          </p>
-          <ul className="list-disc list-inside space-y-2 mt-4 text-gray-700">
-            <li className="text-lg">
-              Receive personalized areas of improvement based on test results.
-            </li>
-            <li className="text-lg">
-              Focus on specific strategies to enhance cognitive abilities and emotional resilience.
-            </li>
-            <li className="text-lg">
-              Gain insights into areas that can be worked on for better mental health.
-            </li>
-          </ul>
-        </section>
+            <section className="bg-white shadow-lg rounded-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-400">
+                Step 4: Personalized Recommendations
+              </h2>
+              <p className="text-base md:text-lg text-gray-600 leading-relaxed mb-4">
+                Based on your assessment results, we provide tailored recommendations and insights to help improve your mental well-being.
+              </p>
+              <div className="space-y-3 text-gray-600">
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Customized suggestions for improving cognitive performance</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Strategies for better emotional regulation and awareness</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="mr-2">•</span>
+                  <span>Regular progress tracking and updated recommendations</span>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
       </main>
       <Footer />
     </div>

@@ -6,6 +6,8 @@ import PrivateRoutes from "./PrivateRoutes"; // Import PrivateRoutes
 import AboutUsPage from "../pages/AboutUs";
 import HowItWorksPage from "../pages/HowItWorks";
 import ContactPage from "../pages/ContactUs";
+import PrivacyPolicyPage from "../pages/PrivacyPolicy";
+import TermsOfServicePage from "../pages/Terms";
 
 const OpenRoutes: React.FC = () => {
   return (
@@ -16,6 +18,8 @@ const OpenRoutes: React.FC = () => {
         <Route path="/about" element={<AboutUsPage />} />
         <Route path="/how-it-works" element={<HowItWorksPage />} />
         <Route path="contact" element={<ContactPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/terms-of-service" element={<TermsOfServicePage />} />
         {/* Private Routes */}
         <Route path="/*" element={<PrivateRoutes />} /> {/* This protects your private routes */}
       </Routes>

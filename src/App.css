@@ -11,3 +11,8 @@ body, html {
   display: flex;
   flex-direction: column;
 }
+
+input {
+  color: black !important;
+  background-color: white !important;
+}

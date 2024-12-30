@@ -44,12 +44,10 @@ const Header: React.FC = () => {
         </div>
         <nav>
           <ul className="flex items-center space-x-8">
-            {[
-              { to: '/', icon: <FaHome />, label: 'Home' },
+            {[{ to: '/', icon: <FaHome />, label: 'Home' },
               { to: '/about', icon: <FaInfoCircle />, label: 'About Us' },
               { to: '/how-it-works', icon: <FaHandsHelping />, label: 'How It Works' },
               { to: '/contact', icon: <FaEnvelope />, label: 'Contact' },
-              { to: '/results', icon: <FaChartLine />, label: 'Get Results' }, // New navigation item
             ].map(({ to, icon, label }) => (
               <li key={to}>
                 <Link
@@ -61,6 +59,21 @@ const Header: React.FC = () => {
                 </Link>
               </li>
             ))}
+
+            {/* Show "Get Results" only if logged in */}
+            {isLoggedIn && (
+              <li>
+                <Link
+                  to="/results"
+                  className="text-white font-semibold transition-all duration-300 hover:text-pink-200 relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-1 after:bg-white after:transition-all after:duration-300 hover:after:w-full flex flex-col items-center justify-center space-y-1"
+                >
+                  <span className="text-xl">
+                    <FaChartLine />
+                  </span>
+                  <span className="text-sm">Get Results</span>
+                </Link>
+              </li>
+            )}
 
             {/* Show Profile Icon with Username if logged in */}
             {isLoggedIn && (

@@ -1,68 +1,84 @@
-import React from "react";
+// AboutUsPage.tsx
+import React, { useEffect } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
 const AboutUsPage: React.FC = () => {
+  useEffect(() => {
+    document.title = "MentalWell - About Us";
+  }, []);
+  
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-grow container mx-auto p-4">
-        <h1 className="text-4xl font-bold mb-6 text-center text-blue-800">
-          About Us
-        </h1>
-        <section className="bg-white shadow-lg rounded-lg p-6 mb-6">
-          <h2 className="text-2xl font-semibold mb-4 text-blue-600">
-            Our Mission
-          </h2>
-          <p className="text-lg text-gray-700">
-            At [Your Company Name], we strive to revolutionize the way organizations approach hiring. We leverage artificial intelligence to streamline the recruitment process, making it more efficient, unbiased, and accessible. Our platform provides innovative tools for talent evaluation, fostering better hiring decisions and enhancing the candidate experience.
-          </p>
-        </section>
-
-        <section className="bg-white shadow-lg rounded-lg p-6 mb-6">
-          <h2 className="text-2xl font-semibold mb-4 text-blue-600">Our Values</h2>
-          <ul className="list-disc list-inside space-y-2 text-gray-700">
-            <li className="text-lg">
-              <strong>Innovation:</strong> We are committed to continuously improving our technology to stay at the forefront of AI-driven recruitment.
-            </li>
-            <li className="text-lg">
-              <strong>Integrity:</strong> We believe in creating fair, unbiased systems that prioritize merit over bias.
-            </li>
-            <li className="text-lg">
-              <strong>Collaboration:</strong> Our team works together to create solutions that empower both employers and job seekers.
-            </li>
-            <li className="text-lg">
-              <strong>Customer Success:</strong> We aim to provide our clients with the best experience, ensuring that their hiring needs are met effectively.
-            </li>
-          </ul>
-        </section>
-
-        <section className="bg-white shadow-lg rounded-lg p-6">
-          <h2 className="text-2xl font-semibold mb-4 text-blue-600">Meet the Team</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-gray-100 p-4 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold text-gray-800">Sam Altman</h3>
-              <p className="text-gray-600">CEO & Founder</p>
-              <p className="text-gray-700 mt-2">
-                Sam brings over 1.5 years of software development experience and a passion for creating innovative AI solutions. As the CEO, he leads the vision and direction of the company.
-              </p>
-            </div>
-            <div className="bg-gray-100 p-4 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold text-gray-800">John Doe</h3>
-              <p className="text-gray-600">Frontend Developer</p>
-              <p className="text-gray-700 mt-2">
-                John is responsible for building the user-facing parts of our platform. His expertise in frontend development ensures our product is user-friendly and visually appealing.
-              </p>
-            </div>
-            <div className="bg-gray-100 p-4 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold text-gray-800">Jane Smith</h3>
-              <p className="text-gray-600">Backend Developer</p>
-              <p className="text-gray-700 mt-2">
-                Jane works on the backend infrastructure, ensuring our platform operates smoothly and can handle high levels of traffic and data securely.
-              </p>
-            </div>
+      <main className="flex-grow bg-gradient-to-br from-blue-50 to-white py-8 px-4 md:py-12">
+        <div className="container mx-auto">
+          {/* Hero Section */}
+          <div className="max-w-4xl mx-auto text-center mb-8 md:mb-12">
+            <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-4 md:mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-400">
+              About MentalWell
+            </h1>
+            <p className="text-base md:text-xl text-gray-600 leading-relaxed tracking-wide px-4">
+              Empowering individuals through innovative mental health assessment and support
+            </p>
           </div>
-        </section>
+
+          <div className="max-w-4xl mx-auto space-y-6">
+            <section className="bg-white shadow-lg rounded-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-400">
+                Our Mission
+              </h2>
+              <p className="text-base md:text-lg text-gray-600 leading-relaxed mb-4">
+                At MentalWell, we're dedicated to making mental health assessment and support accessible to everyone. By combining advanced technology with a compassionate approach, we aim to help individuals better understand and improve their mental well-being.
+              </p>
+            </section>
+
+            <section className="bg-white shadow-lg rounded-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-400">
+                Our Values
+              </h2>
+              <div className="space-y-4">
+                <div className="text-gray-600">
+                  <strong className="text-gray-800">Innovation:</strong> We leverage cutting-edge technology to provide accurate and meaningful mental health insights.
+                </div>
+                <div className="text-gray-600">
+                  <strong className="text-gray-800">Accessibility:</strong> We believe mental health resources should be available to everyone, regardless of their background.
+                </div>
+                <div className="text-gray-600">
+                  <strong className="text-gray-800">Privacy:</strong> We maintain the highest standards of data protection and user privacy.
+                </div>
+                <div className="text-gray-600">
+                  <strong className="text-gray-800">Empowerment:</strong> We provide tools and insights that help individuals take control of their mental well-being.
+                </div>
+              </div>
+            </section>
+
+            <section className="bg-white shadow-lg rounded-lg p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-400">
+                Our Team
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="bg-blue-50 p-6 rounded-lg">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">Dr. Sarah Chen</h3>
+                  <p className="text-blue-600 mb-3">Chief Medical Officer</p>
+                  <p className="text-gray-600">With over 15 years of experience in mental health, Dr. Chen leads our medical strategy and ensures all assessments meet clinical standards.</p>
+                </div>
+
+                <div className="bg-blue-50 p-6 rounded-lg">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">Mike Johnson</h3>
+                  <p className="text-blue-600 mb-3">Tech Lead</p>
+                  <p className="text-gray-600">Mike brings expertise in AI and machine learning, ensuring our platform delivers accurate and reliable assessments.</p>
+                </div>
+
+                <div className="bg-blue-50 p-6 rounded-lg">
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">Emma Thompson</h3>
+                  <p className="text-blue-600 mb-3">User Experience Director</p>
+                  <p className="text-gray-600">Emma ensures our platform is intuitive and accessible, creating a comfortable experience for all users.</p>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
       </main>
       <Footer />
     </div>
