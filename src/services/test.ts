@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api";
+const API_URL = `${(import.meta as any).env.VITE_BACKEND_URL}/api` || "http://localhost:8000/api";
 
 export const getQuestions = async () => {
   try {

@@ -1,7 +1,7 @@
 // users.ts
 import axios from "axios";
 
-const API_URL = "http://localhost:8000/api/users";
+const API_URL = `${(import.meta as any).env.VITE_BACKEND_URL}/api/users` || "http://localhost:8000/api/users";
 
 interface LoginResponse {
   access_token: string;
