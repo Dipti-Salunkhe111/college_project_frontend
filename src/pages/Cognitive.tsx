@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { getQuestions, submitPersonalityTest } from "../services/test";
 import FinishModal from "../components/FinishModal";
+import { motion } from "framer-motion";
 
 interface Question {
   id: number;
@@ -21,6 +22,8 @@ const CognitiveAssessment: React.FC = () => {
   const [showFinishModal, setShowFinishModal] = useState(false);
 
   useEffect(() => {
+    document.title = "MentalWell - Cognitive Assessment";
+    
     const fetchQuestions = async () => {
       try {
         const fetchedQuestions = await getQuestions();
@@ -77,9 +80,7 @@ const CognitiveAssessment: React.FC = () => {
   const isCurrentQuestionAnswered = () => {
     return responses[currentQuestionIndex] !== "";
   };
-  
 
-  // Modified this function to check if current question is answered
   const areAllQuestionsAnswered = () => {
     return isCurrentQuestionAnswered();
   };
@@ -88,27 +89,42 @@ const CognitiveAssessment: React.FC = () => {
     <div className="flex flex-col min-h-screen">
       <Header />
       
-      <main className="flex-grow bg-gray-50 py-6 px-4">
-        <div className="container mx-auto">
-          <h1 className="text-2xl font-semibold text-center mb-6 text-gray-800">
-            Cognitive Assessment
-          </h1>
+      <main className="flex-grow py-16 px-6">
+        <div className="container mx-auto max-w-screen-xl">
+          <motion.div
+            className="text-center mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h1 className="text-3xl md:text-4xl font-medium text-[#333] mb-4">
+              Cognitive Assessment
+            </h1>
+            <p className="text-[#555] max-w-2xl mx-auto">
+              This assessment helps us understand your cognitive patterns and provide personalized insights for your mental wellness journey.
+            </p>
+          </motion.div>
 
           {questions.length > 0 ? (
-            <div className="bg-white p-6 rounded-xl shadow-lg max-w-2xl mx-auto mb-6">
+            <motion.div 
+              className="bg-white p-8 rounded-none shadow-md max-w-3xl mx-auto mb-12 border border-[#eaeae5]"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
               {/* Progress Indicator */}
-              <div className="mb-4">
+              <div className="mb-8">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm font-medium text-gray-600">
+                  <span className="text-sm font-medium text-[#555]">
                     Question {currentQuestionIndex + 1} of {questions.length}
                   </span>
-                  <span className="text-sm font-medium text-gray-600">
+                  <span className="text-sm font-medium text-[#555]">
                     {Math.round(((currentQuestionIndex + 1) / questions.length) * 100)}% Complete
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full bg-[#f0f0e8] rounded-none h-2">
                   <div
-                    className="bg-blue-600 h-2 rounded-full transition-all duration-300 ease-in-out"
+                    className="bg-[#90a870] h-2 rounded-none transition-all duration-300 ease-in-out"
                     style={{
                       width: `${((currentQuestionIndex + 1) / questions.length) * 100}%`
                     }}
@@ -117,20 +133,20 @@ const CognitiveAssessment: React.FC = () => {
               </div>
 
               {/* Question Content */}
-              <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                <p className="text-lg font-medium text-gray-800 mb-4">
+              <div className="bg-[#f8f8f5] rounded-none p-6 mb-8 border border-[#eaeae5]">
+                <h2 className="text-xl font-medium text-[#333] mb-6">
                   {questions[currentQuestionIndex].text}
-                </p>
+                </h2>
 
                 {/* Options */}
-                <div className="space-y-2">
+                <div className="space-y-3">
                   {questions[currentQuestionIndex].options.map((option: string, idx: number) => (
                     <label
                       key={idx}
-                      className={`flex items-center p-3 border-2 rounded-lg cursor-pointer transition-all duration-200
+                      className={`flex items-center p-4 border-2 rounded-none cursor-pointer transition-all duration-200
                         ${responses[currentQuestionIndex] === option 
-                          ? 'border-blue-500 bg-blue-50' 
-                          : 'border-gray-200 hover:border-blue-200 hover:bg-gray-50'}`}
+                          ? 'border-[#90a870] bg-[#f0f0e8]' 
+                          : 'border-[#eaeae5] hover:border-[#c0c0b0] hover:bg-[#fafaf7]'}`}
                     >
                       <input
                         type="radio"
@@ -138,23 +154,23 @@ const CognitiveAssessment: React.FC = () => {
                         value={option}
                         checked={responses[currentQuestionIndex] === option}
                         onChange={(e) => handleAnswerChange(e, currentQuestionIndex)}
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+                        className="h-5 w-5 text-[#90a870] focus:ring-[#90a870] border-[#aeae9e]"
                       />
-                      <span className="ml-3 text-base text-gray-700">{option}</span>
+                      <span className="ml-3 text-base text-[#555]">{option}</span>
                     </label>
                   ))}
                 </div>
               </div>
 
               {/* Navigation Buttons */}
-              <div className="flex justify-between items-center mt-4 px-2">
+              <div className="flex justify-between items-center mt-6">
                 <button
                   onClick={handlePrevQuestion}
                   disabled={currentQuestionIndex === 0}
-                  className={`flex items-center px-4 py-2 rounded-lg font-medium transition-all duration-300
+                  className={`px-6 py-3 font-medium transition-all duration-300
                     ${currentQuestionIndex === 0
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300 active:bg-gray-400'}`}
+                      ? 'bg-[#f0f0e8] text-[#aeae9e] cursor-not-allowed'
+                      : 'border border-[#333] text-[#333] hover:bg-[#f0f0e8]'}`}
                 >
                   ← Previous
                 </button>
@@ -163,10 +179,10 @@ const CognitiveAssessment: React.FC = () => {
                   <button
                     onClick={handleSubmit}
                     disabled={processing || !isCurrentQuestionAnswered()}
-                    className={`flex items-center px-6 py-2 rounded-lg font-medium transition-all duration-300
+                    className={`px-8 py-3 font-medium transition-all duration-300
                       ${processing || !areAllQuestionsAnswered()
-                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                        : 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800'}`}
+                        ? 'bg-[#c0c0b0] text-white cursor-not-allowed'
+                        : 'bg-[#90a870] text-white hover:bg-[#7d9460]'}`}
                   >
                     {processing ? 'Submitting...' : 'Submit Assessment'}
                   </button>
@@ -174,19 +190,19 @@ const CognitiveAssessment: React.FC = () => {
                   <button
                     onClick={handleNextQuestion}
                     disabled={!isCurrentQuestionAnswered()}
-                    className={`flex items-center px-4 py-2 rounded-lg font-medium transition-all duration-300
+                    className={`px-8 py-3 font-medium transition-all duration-300
                       ${!isCurrentQuestionAnswered()
-                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                        : 'bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800'}`}
+                        ? 'bg-[#c0c0b0] text-white cursor-not-allowed'
+                        : 'bg-[#90a870] text-white hover:bg-[#7d9460]'}`}
                   >
                     Next →
                   </button>
                 )}
               </div>
-            </div>
+            </motion.div>
           ) : (
             <div className="flex justify-center items-center min-h-[400px]">
-              <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-600 border-t-transparent"></div>
+              <div className="animate-spin rounded-full h-16 w-16 border-4 border-[#90a870] border-t-transparent"></div>
             </div>
           )}
         </div>
@@ -194,9 +210,12 @@ const CognitiveAssessment: React.FC = () => {
 
       <FinishModal
         isOpen={showFinishModal}
-        onClose={() => setShowFinishModal(false)}
+        onClose={() => {
+          setShowFinishModal(false);
+          navigate("/");
+        }}
         title="Assessment Complete!"
-        message="Thank you for completing the cognitive assessment test."
+        message="Thank you for completing the cognitive assessment test. Your results will help us provide personalized insights for your mental wellness journey."
       />
 
       <Footer />

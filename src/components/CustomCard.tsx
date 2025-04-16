@@ -8,7 +8,7 @@ interface CardProps {
   description: string;
   onClick?: () => void;
   className?: string;
-  disabled?: boolean;  // Added disabled prop
+  disabled?: boolean;
 }
 
 const CustomCard: React.FC<CardProps> = ({
@@ -18,12 +18,12 @@ const CustomCard: React.FC<CardProps> = ({
   description,
   onClick,
   className,
-  disabled  // Added disabled to props
+  disabled
 }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (disabled) return;  // Prevent click if disabled
+    if (disabled) return;
     if (onClick) {
       onClick();
     } else {

@@ -2,15 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { isTokenValid } from "../utils/auth";
 import {
-  FaHome,
-  FaInfoCircle,
-  FaHandsHelping,
-  FaEnvelope,
-  FaSignInAlt,
-  FaUserCircle,
   FaCog,
   FaSignOutAlt,
-  FaChartLine,
 } from "react-icons/fa";
 import Login from "../pages/Login";
 
@@ -19,9 +12,8 @@ const Header: React.FC = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [initialPath, setInitialPath] = useState("/");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLLIElement>(null); // Update the ref type to HTMLLIElement
-  // Ref for the dropdown container
-
+  const dropdownRef = useRef<HTMLLIElement>(null);
+  
   const handleLoginSuccess = (path: string) => {
     setIsLoginModalOpen(false);
     window.location.href = path;
@@ -33,16 +25,9 @@ const Header: React.FC = () => {
   };
 
   const handleLogout = () => {
-    // Clear all localStorage items
     localStorage.clear();
-
-    // Optionally clear sessionStorage if you're using it
     sessionStorage.clear();
-
-    // Invalidate cache by redirecting and preventing back navigation
-    window.location.href = "/"; // Redirect to the homepage
-
-    // Clear browser cache by reloading with a hard refresh
+    window.location.href = "/";
     window.location.reload();
   };
 
@@ -62,47 +47,40 @@ const Header: React.FC = () => {
       }
     };
 
-    // Attach the event listener
     document.addEventListener("mousedown", handleClickOutside);
-
-    // Cleanup the event listener on component unmount
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   return (
-    <header className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white shadow-lg sticky top-0 z-50">
-      <div className="container mx-auto flex items-center justify-between py-2 px-6">
+    <header className="bg-[#f5f5f0] text-[#333] shadow-sm sticky top-0 z-50">
+      <div className="container mx-auto flex items-center justify-between py-4 px-6">
         <div className="flex items-center space-x-3">
-          <img
-            src="https://t3.ftcdn.net/jpg/03/01/43/48/360_F_301434885_SruL7Mc1t5yy4ecJI9Fgtml8uxDbEi9W.jpg"
-            alt="Logo"
-            className="h-10 w-10 rounded-full transition-transform duration-300 hover:scale-110"
-          />
-          <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">
-            MentalWell
-          </h1>
+          <Link to="/" className="flex items-center">
+            <img
+              src="https://t3.ftcdn.net/jpg/03/01/43/48/360_F_301434885_SruL7Mc1t5yy4ecJI9Fgtml8uxDbEi9W.jpg"
+              alt="Logo"
+              className="h-8 w-8"
+            />
+            <h1 className="text-xl font-medium ml-2 text-[#333]">MentalWell</h1>
+          </Link>
         </div>
+        
         <nav>
           <ul className="flex items-center space-x-8">
             {[
-              { to: "/", icon: <FaHome />, label: "Home" },
-              { to: "/about", icon: <FaInfoCircle />, label: "About Us" },
-              {
-                to: "/how-it-works",
-                icon: <FaHandsHelping />,
-                label: "How It Works",
-              },
-              { to: "/contact", icon: <FaEnvelope />, label: "Contact" },
-            ].map(({ to, icon, label }) => (
+              { to: "/", label: "Home" },
+              { to: "/about", label: "About Us" },
+              { to: "/how-it-works", label: "How It Works" },
+              { to: "/contact", label: "Contact" },
+            ].map(({ to, label }) => (
               <li key={to}>
                 <Link
                   to={to}
-                  className="text-white font-semibold transition-all duration-300 hover:text-pink-200 relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-1 after:bg-white after:transition-all after:duration-300 hover:after:w-full flex flex-col items-center justify-center space-y-1"
+                  className="text-[#333] font-normal text-sm hover:text-[#90a870] transition-colors duration-300"
                 >
-                  <span className="text-xl">{icon}</span>
-                  <span className="text-sm">{label}</span>
+                  {label}
                 </Link>
               </li>
             ))}
@@ -111,44 +89,40 @@ const Header: React.FC = () => {
               <li>
                 <Link
                   to="/results"
-                  className="text-white font-semibold transition-all duration-300 hover:text-pink-200 relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-1 after:bg-white after:transition-all after:duration-300 hover:after:w-full flex flex-col items-center justify-center space-y-1"
+                  className="text-[#333] font-normal text-sm hover:text-[#90a870] transition-colors duration-300"
                 >
-                  <span className="text-xl">
-                    <FaChartLine />
-                  </span>
-                  <span className="text-sm">Get Results</span>
+                  Results
                 </Link>
               </li>
             )}
 
             {isLoggedIn && (
               <li
-                className="relative flex flex-col items-center justify-center space-y-1"
+                className="relative"
                 ref={dropdownRef}
               >
                 <button
                   onClick={toggleDropdown}
-                  className="text-white font-semibold transition-all duration-300 hover:text-pink-200 flex flex-col items-center space-y-1"
+                  className="text-[#333] font-normal text-sm hover:text-[#90a870] transition-colors duration-300 flex items-center"
                 >
-                  <FaUserCircle className="text-2xl" />
-                  <span className="text-sm">Profile</span>
+                  Profile
                 </button>
 
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg p-4 flex flex-col space-y-2">
-                    <p className="text-sm font-semibold">{username}</p>
+                  <div className="absolute right-0 mt-2 w-48 bg-white text-[#333] rounded-sm shadow-md p-4 flex flex-col space-y-2">
+                    <p className="text-sm font-medium">{username}</p>
                     <button
-                      className="flex items-center space-x-2 text-sm text-gray-700 hover:text-pink-500 p-2 rounded"
+                      className="flex items-center space-x-2 text-sm text-[#333] hover:text-[#90a870] p-2 rounded transition-colors"
                       onClick={() => (window.location.href = "/profile")}
                     >
-                      <FaCog className="text-xl" />
+                      <FaCog className="text-sm" />
                       <span>Settings</span>
                     </button>
                     <button
-                      className="flex items-center space-x-2 text-sm text-gray-700 hover:text-pink-500 p-2 rounded"
+                      className="flex items-center space-x-2 text-sm text-[#333] hover:text-[#90a870] p-2 rounded transition-colors"
                       onClick={handleLogout}
                     >
-                      <FaSignOutAlt className="text-xl" />
+                      <FaSignOutAlt className="text-sm" />
                       <span>Logout</span>
                     </button>
                   </div>
@@ -160,15 +134,18 @@ const Header: React.FC = () => {
               <li>
                 <button
                   onClick={() => handleLoginClick("/")}
-                  className="text-white font-semibold transition-all duration-300 hover:text-pink-200 relative after:absolute after:bottom-[-2px] after:left-0 after:w-0 after:h-1 after:bg-white after:transition-all after:duration-300 hover:after:w-full flex flex-col items-center justify-center space-y-1"
+                  className="border border-[#333] text-[#333] px-6 py-2 rounded-sm hover:bg-[#f0f0e8] transition-colors duration-300 text-sm font-normal"
                 >
-                  <span className="text-xl">
-                    <FaSignInAlt />
-                  </span>
-                  <span className="text-sm">Login</span>
+                  Login
                 </button>
               </li>
             )}
+            
+            <li>
+              <button className="bg-[#90a870] text-white px-6 py-2 rounded-sm hover:bg-[#7d9460] transition-colors duration-300 text-sm font-normal">
+                Contact Us
+              </button>
+            </li>
           </ul>
         </nav>
       </div>

@@ -1,84 +1,93 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
+import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 const Footer: React.FC = () => {
-  const socialLinks = [
-    { name: 'Facebook', href: 'https://facebook.com', icon: <FaFacebook className="text-blue-500" /> },
-    { name: 'Twitter', href: 'https://twitter.com', icon: <FaTwitter className="text-blue-400" /> },
-    { name: 'Instagram', href: 'https://instagram.com', icon: <FaInstagram className="text-pink-500" /> },
-  ];
-
+  const currentYear = new Date().getFullYear();
+  
   return (
-    <footer className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-4">
-      <div className="container mx-auto px-2">
-        <div className="grid md:grid-cols-3 gap-6">
-          {/* Quick Links */}
-          <div className="text-center md:text-left">
-            <h4 className="font-semibold mb-3 text-blue-400">Quick Links</h4>
+    <footer className="bg-[#f5f5f0] text-[#333] pt-16 pb-8">
+      <div className="container mx-auto px-6">
+        {/* Main Footer Content with Newsletter on right */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          {/* Company Info */}
+          <div>
+            <h4 className="text-lg font-medium mb-4">MentalWell</h4>
+            <p className="text-[#555] mb-4">
+              Empowering mental health awareness with innovative technology for better well-being.
+            </p>
+          </div>
+          
+          {/* Legal */}
+          <div>
+            <h4 className="text-lg font-medium mb-4">Legal</h4>
             <ul className="space-y-1">
               <li>
-                <Link
-                  to="/privacy-policy"
-                  className="
-                    text-gray-300 hover:text-blue-400 transition-colors duration-300
-                  "
-                >
+                <Link to="/privacy-policy" className="text-[#555] hover:text-[#90a870] transition-colors">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/terms-of-service"
-                  className="
-                    text-gray-300 hover:text-blue-400 transition-colors duration-300
-                  "
-                >
+                <Link to="/terms-of-service" className="text-[#555] hover:text-[#90a870] transition-colors">
                   Terms of Service
+                </Link>
+              </li>
+              <li>
+                <Link to="/accessibility" className="text-[#555] hover:text-[#90a870] transition-colors">
+                  Accessibility
                 </Link>
               </li>
             </ul>
           </div>
-
-          {/* Social Media Links */}
-          <div className="text-center">
-            <h4 className="font-semibold mb-3 text-blue-400">Follow Us</h4>
-            <div className="flex justify-center space-x-4">
-              {socialLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="
-                    text-gray-300 hover:text-white transition-transform duration-300
-                    transform hover:scale-110
-                  "
-                  aria-label={link.name}
-                >
-                  {link.icon}
-                </a>
-              ))}
+          
+          {/* Contact Info */}
+          <div>
+            <h4 className="text-lg font-medium mb-4">Contact Us</h4>
+            <ul className="space-y-3 text-[#555]">
+              <li>Email: support@mentalwell.com</li>
+              <li>Phone: +123-456-7890</li>
+              <li>123 Wellness Street<br />Mental Health City, MH 12345</li>
+            </ul>
+            
+            {/* Social Links */}
+            <div className="flex space-x-4 mt-4">
+              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-[#555] hover:text-[#90a870]">
+                <FaFacebook size={20} />
+              </a>
+              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-[#555] hover:text-[#90a870]">
+                <FaTwitter size={20} />
+              </a>
+              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-[#555] hover:text-[#90a870]">
+                <FaInstagram size={20} />
+              </a>
+              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-[#555] hover:text-[#90a870]">
+                <FaLinkedin size={20} />
+              </a>
             </div>
           </div>
-
-          {/* Contact Info */}
-          <div className="text-center md:text-right">
-            <h4 className="font-semibold mb-3 text-blue-400">Contact Us</h4>
-            <ul className="space-y-1">
-              <li className="text-gray-300">
-                <span className="font-semibold text-white">Email:</span> support@mentalwell.com
-              </li>
-              <li className="text-gray-300">
-                <span className="font-semibold text-white">Phone:</span> +123-456-7890
-              </li>
-            </ul>
+          
+          {/* Newsletter Section - Fourth column (right side) */}
+          <div>
+            <h4 className="text-lg font-medium mb-3">Stay connected</h4>
+            <p className="text-[#555] mb-3 text-sm">
+              Join our community for the latest updates on mental wellness.
+            </p>
+            <div className="flex flex-col gap-2">
+              <input 
+                type="email" 
+                placeholder="Your email" 
+                className="px-3 py-2 text-sm border border-[#ddd] rounded-sm focus:outline-none focus:ring-1 focus:ring-[#90a870] w-full"
+              />
+              <button className="bg-[#90a870] text-white px-4 py-2 text-sm rounded-sm hover:bg-[#7d9460] transition-colors duration-300 w-full">
+                Subscribe
+              </button>
+            </div>
           </div>
         </div>
-
+        
         {/* Copyright */}
-        <div className="border-t border-gray-700 mt-6 pt-3 text-center text-gray-400 text-sm">
-          © {new Date().getFullYear()} MentalWell. All Rights Reserved.
+        <div className="border-t border-[#ddd] pt-8 text-center text-[#777] text-sm">
+          © {currentYear} MentalWell. All Rights Reserved.
         </div>
       </div>
     </footer>

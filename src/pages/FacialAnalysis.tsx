@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { submitFacialAnalysis } from '../services/test';
 import FinishModal from '../components/FinishModal';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import { motion } from 'framer-motion';
 
 interface EmotionResults {
   [key: string]: number;
 }
 
-// Separate components for Video and Image uploads
+// VideoUpload Component
 const VideoUpload: React.FC<{
   onFileChange: (file: File | null) => void;
   videoFile: File | null;
@@ -21,57 +24,74 @@ const VideoUpload: React.FC<{
   };
 
   return (
-    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-      <label className="block text-gray-700 mb-4">Upload a video file (max 10MB)</label>
+    <motion.div
+      className="bg-[#f8f8f5] p-8 border border-[#eaeae5]"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <label className="block text-[#333] mb-4 font-medium">Upload a video file (max 10MB)</label>
       <input
         type="file"
         onChange={handleFileChange}
         accept="video/*"
-        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+        className="block w-full text-sm text-[#555] file:mr-4 file:py-2 file:px-4 file:rounded-none file:border-0 file:text-sm file:font-semibold file:bg-[#90a870] file:text-white hover:file:bg-[#7d9460]"
       />
-      {videoFile && <p className="mt-2 text-sm text-gray-600">Selected: {videoFile.name}</p>}
-    </div>
+      {videoFile && <p className="mt-2 text-sm text-[#555]">Selected: {videoFile.name}</p>}
+    </motion.div>
   );
 };
 
+// ImageUpload Component
 const ImageUpload: React.FC<{
   onFileChange: (files: FileList | null) => void;
   imageFiles: FileList | null;
 }> = ({ onFileChange, imageFiles }) => {
   return (
-    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-      <label className="block text-gray-700 mb-4">Upload multiple images (JPEG, PNG)</label>
+    <motion.div
+      className="bg-[#f8f8f5] p-8 border border-[#eaeae5]"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <label className="block text-[#333] mb-4 font-medium">Upload multiple images (JPEG, PNG)</label>
       <input
         type="file"
         onChange={(e) => onFileChange(e.target.files)}
         accept="image/*"
         multiple
-        className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+        className="block w-full text-sm text-[#555] file:mr-4 file:py-2 file:px-4 file:rounded-none file:border-0 file:text-sm file:font-semibold file:bg-[#90a870] file:text-white hover:file:bg-[#7d9460]"
       />
       {imageFiles && (
-        <p className="mt-2 text-sm text-gray-600">Selected: {imageFiles.length} file(s)</p>
+        <p className="mt-2 text-sm text-[#555]">Selected: {imageFiles.length} file(s)</p>
       )}
-    </div>
+    </motion.div>
   );
 };
 
+// ResultsModal Component
 const ResultsModal: React.FC<{
   results: EmotionResults;
   onClose: () => void;
 }> = ({ results, onClose }) => (
-  <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-    <div className="bg-white p-8 rounded-xl max-w-md w-full mx-4">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">Facial Analysis Results</h2>
+  <motion.div
+    className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.3 }}
+  >
+    <div className="bg-[#f8f8f5] p-8 max-w-md w-full mx-4 border border-[#eaeae5]">
+      <h2 className="text-2xl font-medium text-[#333] mb-6">Facial Analysis Results</h2>
       <div className="space-y-4">
         {Object.entries(results).map(([emotion, score]) => (
-          <div key={emotion} className="bg-gray-50 p-3 rounded-lg">
+          <div key={emotion} className="bg-white p-3 border border-[#eaeae5]">
             <div className="flex justify-between items-center">
-              <span className="capitalize text-gray-700">{emotion}</span>
-              <span className="font-semibold text-blue-600">{(score * 100).toFixed(1)}%</span>
+              <span className="capitalize text-[#555]">{emotion}</span>
+              <span className="font-medium text-[#90a870]">{(score * 100).toFixed(1)}%</span>
             </div>
-            <div className="mt-2 bg-gray-200 rounded-full h-2">
+            <div className="mt-2 bg-[#eaeae5] h-2">
               <div
-                className="bg-blue-600 h-2 rounded-full"
+                className="bg-[#90a870] h-2"
                 style={{ width: `${score * 100}%` }}
               />
             </div>
@@ -80,14 +100,15 @@ const ResultsModal: React.FC<{
       </div>
       <button
         onClick={onClose}
-        className="mt-6 w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        className="mt-6 w-full bg-[#90a870] text-white px-4 py-2 rounded-none hover:bg-[#7d9460] transition-colors"
       >
         Continue
       </button>
     </div>
-  </div>
+  </motion.div>
 );
 
+// Main EmotionDetection Component
 const EmotionDetection: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'video' | 'images'>('video');
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -98,88 +119,103 @@ const EmotionDetection: React.FC = () => {
   const [showResultsModal, setShowResultsModal] = useState(false);
   const [showFinishModal, setShowFinishModal] = useState(false);
 
-// In the handleSubmit function, update it like this:
-const handleSubmit = async () => {
-  if (activeTab === 'video' && !videoFile) {
-    setError('Please select a video file first');
-    return;
-  }
-  if (activeTab === 'images' && !imageFiles) {
-    setError('Please select image files first');
-    return;
-  }
-
-  try {
-    setProcessing(true);
-    setError(null);
-
-    const formData = new FormData();
-    if (activeTab === 'video' && videoFile) {
-      formData.append('files', videoFile);
-    } else if (activeTab === 'images' && imageFiles) {
-      Array.from(imageFiles).forEach((file) => formData.append('files', file));
+  const handleSubmit = async () => {
+    if (activeTab === 'video' && !videoFile) {
+      setError('Please select a video file first');
+      return;
+    }
+    if (activeTab === 'images' && !imageFiles) {
+      setError('Please select image files first');
+      return;
     }
 
-    const response = await submitFacialAnalysis(formData);
-    setResults(response.scores);
-    // First show the results modal
-    setShowResultsModal(true);
-    // Then after response is successful, set showFinishModal to true
-    setShowFinishModal(true);
-  } catch (err) {
-    setError(err instanceof Error ? err.message : 'An error occurred during processing');
-  } finally {
-    setProcessing(false);
-  }
-};
+    try {
+      setProcessing(true);
+      setError(null);
+
+      const formData = new FormData();
+      if (activeTab === 'video' && videoFile) {
+        formData.append('files', videoFile);
+      } else if (activeTab === 'images' && imageFiles) {
+        Array.from(imageFiles).forEach((file) => formData.append('files', file));
+      }
+
+      const response = await submitFacialAnalysis(formData);
+      setShowFinishModal(true);
+      setResults(response.scores);
+      setShowResultsModal(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred during processing');
+    } finally {
+      setProcessing(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex flex-col items-center px-4">
-      <h1 className="text-4xl font-bold text-gray-800 mt-12">Facial Emotion Detection</h1>
-      <p className="text-gray-600 mt-4 mb-10 text-center">
-        Analyze emotions through uploaded video or multiple images using AI-powered facial recognition.
-      </p>
+    <div className="flex flex-col min-h-screen bg-[#f5f5f0]">
+      <Header />
+      <main className="flex-grow py-16 px-6">
+        <div className="container mx-auto max-w-screen-xl">
+          <motion.h1
+            className="text-3xl md:text-5xl font-medium text-[#333] mb-6 leading-tight text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Facial Emotion Detection
+          </motion.h1>
+          <motion.p
+            className="text-base md:text-lg text-[#555] mb-10 leading-relaxed text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Analyze emotions through uploaded video or multiple images using AI-powered facial recognition.
+          </motion.p>
 
-      <div className="w-full max-w-4xl bg-white p-8 rounded-xl shadow-md">
-        <div className="flex border-b mb-6">
-          <button
-            className={`flex-1 py-2 text-center font-medium ${
-              activeTab === 'video' ? 'text-blue-600 border-blue-600 border-b-2' : 'text-gray-600'
-            }`}
-            onClick={() => setActiveTab('video')}
-          >
-            Upload Video
-          </button>
-          <button
-            className={`flex-1 py-2 text-center font-medium ${
-              activeTab === 'images' ? 'text-blue-600 border-blue-600 border-b-2' : 'text-gray-600'
-            }`}
-            onClick={() => setActiveTab('images')}
-          >
-            Upload Images
-          </button>
+          <div className="bg-white p-8 border border-[#eaeae5]">
+            <div className="flex border-b border-[#eaeae5] mb-6">
+              <button
+                className={`flex-1 py-2 text-center font-medium ${
+                  activeTab === 'video' ? 'text-[#90a870] border-b-2 border-[#90a870]' : 'text-[#555]'
+                }`}
+                onClick={() => setActiveTab('video')}
+              >
+                Upload Video
+              </button>
+              <button
+                className={`flex-1 py-2 text-center font-medium ${
+                  activeTab === 'images' ? 'text-[#90a870] border-b-2 border-[#90a870]' : 'text-[#555]'
+                }`}
+                onClick={() => setActiveTab('images')}
+              >
+                Upload Images
+              </button>
+            </div>
+
+            {activeTab === 'video' ? (
+              <VideoUpload onFileChange={setVideoFile} videoFile={videoFile} />
+            ) : (
+              <ImageUpload onFileChange={setImageFiles} imageFiles={imageFiles} />
+            )}
+
+            {error && <div className="text-red-500 text-sm text-center mt-4">{error}</div>}
+
+            <button
+              onClick={handleSubmit}
+              disabled={processing || (!videoFile && !imageFiles)}
+              className={`w-full py-3 rounded-none font-medium mt-6 ${
+                processing || (!videoFile && !imageFiles)
+                  ? 'bg-[#eaeae5] cursor-not-allowed text-[#555]'
+                  : 'bg-[#90a870] hover:bg-[#7d9460] text-white'
+              } transition-colors`}
+            >
+              {processing ? 'Processing...' : 'Analyze'}
+            </button>
+          </div>
         </div>
-
-        {activeTab === 'video' ? (
-          <VideoUpload onFileChange={setVideoFile} videoFile={videoFile} />
-        ) : (
-          <ImageUpload onFileChange={setImageFiles} imageFiles={imageFiles} />
-        )}
-
-        {error && <div className="text-red-500 text-sm text-center mt-4">{error}</div>}
-
-        <button
-          onClick={handleSubmit}
-          disabled={processing || (!videoFile && !imageFiles)}
-          className={`w-full py-3 rounded-lg font-medium mt-6 ${
-            processing || (!videoFile && !imageFiles)
-              ? 'bg-gray-300 cursor-not-allowed'
-              : 'bg-blue-600 hover:bg-blue-700 text-white'
-          } transition-colors`}
-        >
-          {processing ? 'Processing...' : 'Analyze'}
-        </button>
-      </div>
+      </main>
+      <Footer />
 
       {showResultsModal && results && (
         <ResultsModal

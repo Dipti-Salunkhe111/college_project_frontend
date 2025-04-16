@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { motion } from "framer-motion";
 
 const ContactPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -11,7 +12,6 @@ const ContactPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
-  
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -33,28 +33,37 @@ const ContactPage: React.FC = () => {
     }
   };
 
-
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-[#f5f5f0]">
       <Header />
-      <main className="flex-grow bg-gradient-to-br from-blue-50 to-white py-8 px-4 md:py-12">
-        <div className="container mx-auto">
+      <main className="flex-grow py-16 px-6">
+        <div className="container mx-auto max-w-screen-xl">
           {/* Hero Section */}
-          <div className="max-w-4xl mx-auto text-center mb-8 md:mb-12">
-            <h1 className="text-2xl md:text-4xl font-bold text-gray-800 mb-4 md:mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-green-400">
+          <motion.div
+            className="text-center mb-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="text-3xl md:text-4xl font-medium text-[#333] mb-4">
               Contact Us
             </h1>
-            <p className="text-base md:text-xl text-gray-600 leading-relaxed tracking-wide px-4">
+            <p className="text-base md:text-lg text-[#555] leading-relaxed max-w-2xl mx-auto">
               We would love to hear from you! Feel free to reach out with any questions or feedback.
             </p>
-          </div>
+          </motion.div>
 
           {/* Contact Form */}
-          <section className="bg-white shadow-lg rounded-lg p-6 mb-6">
-            <h2 className="text-2xl font-semibold mb-4 text-blue-600">We'd Love to Hear From You</h2>
+          <motion.section
+            className="bg-[#f8f8f5] p-8 border border-[#eaeae5] shadow-md max-w-3xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <h2 className="text-2xl font-medium text-[#333] mb-4">We'd Love to Hear From You</h2>
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
-                <label className="block text-lg font-semibold text-gray-700 mb-2" htmlFor="name">
+                <label className="block text-sm font-medium text-[#333] mb-2" htmlFor="name">
                   Name
                 </label>
                 <input
@@ -64,11 +73,11 @@ const ContactPage: React.FC = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-3 border border-gray-300 rounded-lg"
+                  className="w-full p-3 border border-[#eaeae5] rounded-none bg-[#f0f0e8] focus:outline-none focus:ring-2 focus:ring-[#90a870]"
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-lg font-semibold text-gray-700 mb-2" htmlFor="email">
+                <label className="block text-sm font-medium text-[#333] mb-2" htmlFor="email">
                   Email Address
                 </label>
                 <input
@@ -78,11 +87,11 @@ const ContactPage: React.FC = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-3 border border-gray-300 rounded-lg"
+                  className="w-full p-3 border border-[#eaeae5] rounded-none bg-[#f0f0e8] focus:outline-none focus:ring-2 focus:ring-[#90a870]"
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-lg font-semibold text-gray-700 mb-2" htmlFor="message">
+                <label className="block text-sm font-medium text-[#333] mb-2" htmlFor="message">
                   Your Message
                 </label>
                 <textarea
@@ -92,25 +101,25 @@ const ContactPage: React.FC = () => {
                   onChange={handleInputChange}
                   required
                   rows={4}
-                  className="w-full p-3 border border-gray-300 rounded-lg"
+                  className="w-full p-3 border border-[#eaeae5] rounded-none bg-[#f0f0e8] focus:outline-none focus:ring-2 focus:ring-[#90a870]"
                 />
               </div>
               <div className="mb-4">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`w-full p-3 bg-blue-600 text-white rounded-lg font-semibold ${isSubmitting ? "opacity-50" : ""}`}
+                  className={`w-full p-3 bg-[#90a870] text-white rounded-none font-medium hover:bg-[#7d9460] transition-colors duration-300 ${isSubmitting ? "opacity-50" : ""}`}
                 >
                   {isSubmitting ? "Sending..." : "Send Message"}
                 </button>
               </div>
               {statusMessage && (
-                <div className={`text-center ${statusMessage.includes("Thank you") ? "text-green-600" : "text-red-600"}`}>
+                <div className={`text-center ${statusMessage.includes("Thank you") ? "text-[#90a870]" : "text-red-600"}`}>
                   {statusMessage}
                 </div>
               )}
             </form>
-          </section>
+          </motion.section>
         </div>
       </main>
       <Footer />
