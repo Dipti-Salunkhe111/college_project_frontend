@@ -8,7 +8,7 @@ export interface LoginProps {
   initialPath: string;
 }
 
-const Login: React.FC<LoginProps> = ({ onLoginSuccess, onClose, initialPath }) => {
+const Login: React.FC<LoginProps> = ({ onLoginSuccess, initialPath }) => {
   const [showLogin, setShowLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
