@@ -171,15 +171,20 @@ export interface CognitiveTestResult {
 
 export interface EmotionTestResult {
   scores: {
-    neutral: number;
-    happy: number;
-    sad: number;
-    surprise: number;
+    Angry: number;
+    Disgusted: number;
+    Fearful: number;
+    Happy: number;
+    Neutral: number;
+    Sad: number;
+    Surprised: number;
   };
   type: string;
   filenames: string[];
   timestamp: string;
 }
+
+
 
 // Update the function signatures
 export const getCognitiveTestData = async (): Promise<CognitiveTestResult> => {

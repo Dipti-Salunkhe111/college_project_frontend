@@ -52,15 +52,17 @@ const ResultsPage: React.FC = () => {
     fetchData();
   }, []);
 
-  const calculateCombinedScore = () => {
-    if (!cognitiveData || !emotionData) return 0;
-    const cognitiveScore = cognitiveData.percentage_score;
-    const emotionScore =
-      ((emotionData.scores.happy * 100) +
-        ((1 - emotionData.scores.sad) * 100)) /
-      2;
-    return 0.3 * cognitiveScore + 0.7 * emotionScore;
-  };
+  function calculateCombinedScore(result: EmotionTestResult): number {
+    if (!result?.scores) return 0;
+  
+    const { Happy = 0, Neutral = 0 } = result.scores;
+  
+    const combined = Happy + Neutral;
+    const clamped = Math.min(Math.max(combined, 0), 1); // Ensure 0 <= score <= 1
+  
+    return Math.round(clamped * 100); // Return percentage
+  }
+  
 
   const getEmotionChartData = (emotionData: EmotionTestResult | null) => {
     if (!emotionData) return { labels: [], datasets: [] };
@@ -219,13 +221,14 @@ const ResultsPage: React.FC = () => {
             <div
               className="bg-[#90a870] h-6"
               style={{
-                width: `${calculateCombinedScore()}%`,
+                width: `${calculateCombinedScore(emotionData)}%`,
                 transition: "width 1.5s ease-in-out",
               }}
             ></div>
           </div>
           <p className="text-xl text-center font-medium text-[#333]">
-            {calculateCombinedScore().toFixed(2)}%
+          {calculateCombinedScore(emotionData).toFixed(2)}%
+
           </p>
         </motion.div>
 
